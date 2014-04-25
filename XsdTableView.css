@@ -1,0 +1,69 @@
+body {
+	font-family: Times New Roman, serif;
+	font-size: 11pt;
+}
+table.items {
+	border: none;
+	border-collapse: collapse;
+    table-layout: fixed;
+}
+.items th {background: #E6E6E6;}
+.items td, th {
+	border: solid 1px black;
+    padding: 0.5mm 1mm;
+}
+.items td {vertical-align: top}
+.items td.blank {
+	border: none;
+	width: 1%;
+}
+td.cardinality {
+	text-align: center;
+    display: inline-block;
+    white-space: nowrap;
+    width: 12mm;
+}
+.elementName {font-style: normal;}
+td.elementGroup {font-style: italic;}
+.complexElementName {
+	font-style: normal;
+    font-weight: bold;
+}
+.attributeName{
+	font-style: italic;
+}
+td.counter {
+	font-weight: bold;
+    display: inline-block;
+    white-space: nowrap;
+}
+p {
+	margin-bottom: 0;
+	margin-top: 1pt;
+    text-indent: 20pt;
+    font-family: Arial, serif;
+	font-size: 11pt;
+}
+p.bold {
+    font-weight: bold;
+    text-indent: 0;
+}
+h1 {
+	margin-bottom: 3pt;
+	margin-top: 12pt;
+	font-family: Arial, serif;
+	font-size: 13pt;
+	font-weight: bold;
+}
+h2 {
+    margin-bottom: 6pt;
+    margin-top: 8pt;
+    font-family: Arial, serif;
+    font-size: 12pt;
+    font-style: italic;
+    font-weight: normal;
+}
+.alert {
+	font-weight: bold;
+	color: red;
+}

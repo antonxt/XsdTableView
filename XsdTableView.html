@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+ 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Генератор описаний схем XSD в виде таблицы</title>
+    <link rel="stylesheet" type="text/css" href="XsdTableView.css"/>
+    <script type="text/javascript">
+        var number = 0;
+
+        function processFile(fullSchemaPath) {
+            var schema = new ActiveXObject("Microsoft.XMLDOM");
+            schema.async = false;
+            schema.load(fullSchemaPath);
+            var xslt = new ActiveXObject("Microsoft.XMLDOM");
+            xslt.async = false;
+            xslt.load("XsdTableView.xslt");
+
+            /* Add XSLT transformation result to the DIV */
+            document.getElementById('content').innerHTML += schema.transformNode(xslt);
+
+            for(var i = 1; i < 256; i++){
+                var table = document.getElementById('rootElement_' + i);
+                if (table) {
+                    renderTable(table);
+
+                    /* Нужно изменить id получившейся таблицы, чтобы при последующих преобразованиях
+                     функция renderTable вызывалась для новосозданных таблиц, а не для первой из уже существующих. */
+                    table.id += '_processed_' + number;
+                    number++;
+
+                }
+            }
+            setButtonsVisible(true);
+            document.getElementById('selectButton').focus();
+        }
+
+        function clearDiv() {
+            document.getElementById('content').innerHTML = '';
+            setButtonsVisible(false);
+        }
+
+        function setButtonsVisible(visible) {
+            setVisibility('clearButton', visible);
+            setVisibility('selectButton', visible);
+        }
+
+        function setVisibility(id, visible) {
+            document.getElementById(id).style.visibility = visible ? 'visible' : 'hidden';
+        }
+
+        function select(id) {
+            document.selection.empty();
+            var range = document.body.createTextRange();
+            range.moveToElementText(document.getElementById(id));
+            range.select();
+        }
+
+        function checkBrowser() {
+            var browser = navigator.appName;
+            var version = navigator.appVersion;
+            if (browser.indexOf('Internet Explorer') < 0 || (version.indexOf('MSIE 8') < 0 && version.indexOf('MSIE 9') < 0 && version.indexOf('MSIE 10') < 0)) {
+                var error = "<strong>Для рабoты данного преобразования необходим Microsoft Internet Explorer версии 8 и выше.</strong>";
+                error += "<p><strong>Текущий браузер:</strong> " + browser + "</p>";
+                error += "<p><strong>Версия:</strong> " + version + "</p>";
+                document.getElementById('body').innerHTML = error;
+            }
+        }
+    </script>
+    <script type="text/javascript" src="XsdTableView.js" charset="utf-8"></script>
+</head>
+<body onload="checkBrowser();" id="body">
+<input type="file" id="fileChooser" title="Выберите схему"/>
+<button onclick="processFile(document.getElementById('fileChooser').value);">Process</button>
+<button onclick="clearDiv();" id="clearButton" style="visibility: hidden;">Clear</button>
+<button onclick="select('content');" id="selectButton" style="visibility: hidden;">Select the result</button>
+<hr/>
+<div id="content"></div>
+</body>
+</html>
